@@ -145,13 +145,21 @@ const ProductPart = ({ id }) => {
       />
       {note > 50 ? (
         <>
-          <ProductList data={qualities} name="Qualités" />
-          <ProductList data={problems} name="Défault" />
+          {qualities.length > 0 && (
+            <ProductList data={qualities} name="Qualités" />
+          )}
+          {problems.length > 0 && (
+            <ProductList data={problems} name="Défauts" />
+          )}
         </>
       ) : (
         <>
-          <ProductList data={problems} name="Défault" />
-          <ProductList data={qualities} name="Qualités" />
+          {problems.length > 0 && (
+            <ProductList data={problems} name="Défauts" />
+          )}
+          {qualities.length > 0 && (
+            <ProductList data={qualities} name="Qualités" />
+          )}
         </>
       )}
     </View>
@@ -161,7 +169,7 @@ const ProductPart = ({ id }) => {
 const styles = StyleSheet.create({
   container: {
     height: 300,
-    backgroundColor: "blue",
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },

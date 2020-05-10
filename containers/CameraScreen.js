@@ -14,7 +14,6 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 
 //components
 import TorchButton from "../components/TorchButton";
-import ProductCard from "../components/ProductCard";
 import SilenceButton from "../components/SilenceButton";
 
 import ProductPart from "../components/ProductPart";
@@ -26,6 +25,8 @@ const Camera = ({ setAllProductsData, allProductsData }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(true);
   const [code, setCode] = useState();
+  const [scroll, setScroll] = useState(false);
+  console.log("scroll ==>", scroll);
 
   useEffect(() => {
     (async () => {
@@ -59,23 +60,48 @@ const Camera = ({ setAllProductsData, allProductsData }) => {
   }
 
   return (
-    <View style={styles.cameraContainer}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      <TorchButton />
-      <SilenceButton />
-      <View style={styles.scanFrame} />
+    <ScrollView
+      style={{ flex: 1 }}
+      onScroll={() => {
+        setScroll(true);
+      }}
+    >
+      {scroll ? null : (
+        <View style={styles.cameraContainer}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <TorchButton />
+          <SilenceButton />
+          <View style={styles.scanFrame} />
+        </View>
+      )}
+
       {scanned && (
-        <View style={styles.modal}>
+        <View style={[scroll ? { width: "100%" } : styles.modal]}>
+          {scroll ? (
+            <View style={styles.scanHeader}>
+              <TouchableOpacity
+                onPress={() => setScroll(false)}
+                style={styles.scanButton}
+              >
+                <MaterialCommunityIcons
+                  name="barcode-scan"
+                  size={36}
+                  color="white"
+                  style={{ paddingTop: 5 }}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : null}
           <View style={styles.file}>
             <View style={styles.fileHandle} />
           </View>
           <ProductPart id={code} setAllProductsData={setAllProductsData} />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -86,6 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     color: "white",
+    width: "100%",
   },
   cameraContainer: {
     flex: 1,
@@ -93,9 +120,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     backgroundColor: "red",
-    margin: 0,
-    padding: 0,
-    position: "relative",
   },
   scanFrame: {
     borderRadius: 25,
@@ -103,6 +127,24 @@ const styles = StyleSheet.create({
     width: 300,
     borderWidth: 1,
     borderColor: "white",
+  },
+  scanButton: {
+    backgroundColor: Colors.yukaGreen,
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
+  scanHeader: {
+    backgroundColor: "white",
+    width: "100%",
+    height: 80,
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   file: {
     borderTopLeftRadius: 5,
@@ -124,8 +166,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: "absolute",
-    width: "100%",
     top: height - 180,
+    width: "100%",
   },
 });
 
