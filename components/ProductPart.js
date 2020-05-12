@@ -168,7 +168,6 @@ const ProductPart = ({ id }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

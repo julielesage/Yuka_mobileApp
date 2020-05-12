@@ -36,18 +36,39 @@ const IngredientGraph = ({ value, norms, duo, circleColor }) => {
             />
             <View style={[styles.graphPart, { backgroundColor: Colors.red }]} />
           </View>
-          <View style={{ flexDirection: "row", width: graphWidth }}>
+          <View
+            style={{
+              flexDirection: "row",
+              width: graphWidth,
+              position: "relative",
+            }}
+          >
             <Text style={styles.subText}>0</Text>
-            <Text style={[styles.subText, { marginLeft: graphWidth / 4 - 12 }]}>
-              {norms[2]}
-            </Text>
-            <Text style={[styles.subText, { marginLeft: graphWidth / 4 - 12 }]}>
-              {norms[1]}
-            </Text>
-            <Text style={[styles.subText, { marginLeft: graphWidth / 4 - 12 }]}>
-              {norms[2]}
-            </Text>
-            <Text style={[styles.subText, { marginLeft: graphWidth / 4 - 12 }]}>
+            <View style={{ flex: 1, justifyContent: "center" }}>
+              <Text style={styles.subText}>{norms[1]}</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                position: "absolute",
+                left: 0,
+                width: graphWidth / 2,
+              }}
+            >
+              <Text style={styles.subText}>{norms[0]}</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                position: "absolute",
+                right: 0,
+                width: graphWidth / 2,
+              }}
+            >
+              <Text style={styles.subText}>{norms[2]}</Text>
+            </View>
+
+            <Text style={[styles.subText, { textAlign: "right" }]}>
               {norms[3]}
             </Text>
           </View>
@@ -58,10 +79,7 @@ const IngredientGraph = ({ value, norms, duo, circleColor }) => {
   return (
     <View style={styles.container}>
       <View
-        style={[
-          styles.triangleCursor,
-          { borderBottomColor: circleColor, marginLeft: cursorPosition },
-        ]}
+        style={[styles.triangleCursor, { borderBottomColor: circleColor }]}
       ></View>
       <View>{graph()}</View>
     </View>
@@ -77,6 +95,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 2,
     height: 5,
+  },
+  subText: {
+    color: Colors.h2,
+    fontSize: 16,
+    textAlign: "center",
   },
   triangleCursor: {
     width: 0,

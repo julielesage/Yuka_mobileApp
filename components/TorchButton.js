@@ -1,12 +1,30 @@
-import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 //to light Torch
 import RNFlash from "react-native-flash";
+import Torch from "react-native-torch";
+import { Camera } from "expo-camera";
 
 const TorchButton = () => {
   const [torchOn, setTorchOn] = useState(false);
+  // const [hasPermission, setHasPermission] = useState(null);
+  // const [type, setType] = useState(Camera.Constants.Type.back);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.requestPermissionsAsync();
+  //     setHasPermission(status === "granted");
+  //   })();
+  // }, []);
+
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
 
   const useFlash = () => {
     RNFlash.hasFlash(
@@ -21,12 +39,19 @@ const TorchButton = () => {
   };
 
   return (
+    // <Camera style={{ flex: 1 }} type={type}>
     <TouchableOpacity
       style={styles.flashButton}
       onPress={() => {
-        if (torchOn) setTorchOn(false);
-        else setTorchOn(true);
-        useFlash();
+        if (torchOn) {
+          setTorchOn(false);
+          // Torch.switchState(false);
+          // Camera.Constants.FlashMode.Off;
+        } else {
+          setTorchOn(true);
+          // Torch.switchState(true);
+          // Camera.Constants.FlashMode.Torch;
+        }
       }}
     >
       {torchOn ? (
@@ -35,6 +60,8 @@ const TorchButton = () => {
         <MaterialCommunityIcons name="flashlight" size={40} color="black" />
       )}
     </TouchableOpacity>
+    //{" "}
+    // </Camera>
   );
 };
 
